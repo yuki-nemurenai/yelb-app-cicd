@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-appserver
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "yelb.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "yelb.fullname" . }}
+        tier: middletier
+        release: {{ .Release.Name }}
+        chart: {{ template "yelb.chart" . }}
+    spec:
+      containers:
+      - name: {{ template "yelb.fullname" . }}-appserver
+        image: {{ .Values.imageBackend }}:{{ .Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4567
+        env:
+        - name: "RACK_ENV"
+          value: {{ .Values.yelbrackenv | quote }}
+        - name: "APP_SERVER_HOSTNAME"
+          value: "{{ .Chart.Name }}-appserver"
+        - name: "YELB_REDIS_ENDPOINT"
+          value: {{ .Values.redishost | quote }}
+        - name: "YELB_REDIS_PORT"
+          value: {{ .Values.redisport | quote }}
+        - name: "YELB_REDIS_PASSWORD"
+          value: {{ .Values.redispassword | quote }}
+        - name: "YELB_DB_SERVER_ENDPOINT"
+          value: {{ .Values.yelbdbhost | quote }}
+        - name: "YELB_DB_SERVER_PASSWORD"
+          value: {{ .Values.yelbdbpassword | quote }}
+        - name: "YELB_DB_SERVER_USER"
+          value: {{ .Values.yelbdbuser | quote }}
+        - name: "YELB_DB_SERVER_PORT"
+          value: {{ .Values.yelbdbport | quote }}
+        - name: "YELB_DB_NAME"
+          value: {{ .Values.yelbdbname | quote }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}

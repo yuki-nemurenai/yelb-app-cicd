@@ -1,0 +1,29 @@
+---
+
+version: "3.7"
+services:
+  yelb-ui:
+    # yamllint disable-line rule:line-length
+    image: $CI_REGISTRY/$CI_PROJECT_PATH/$IMAGE_FRONTEND:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+    depends_on:
+      - yelb-appserver
+    ports:
+      - 8880:80
+
+  yelb-appserver:
+    # yamllint disable-line rule:line-length
+    image: $CI_REGISTRY/$CI_PROJECT_PATH/$IMAGE_BACKEND:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+    depends_on:
+      - redis-server
+      - yelb-db
+
+  redis-server:
+    image: redis:4.0.2
+    command: redis-server --requirepass ${YELB_REDIS_PASSWORD}
+
+  yelb-db:
+    image: mreferre/yelb-db:0.5
+
+  curl:
+    image: curlimages/curl:7.73.0
+    command: /bin/sh -c "sleep 10 && curl -s http://yelb-ui/ -i -vvv"

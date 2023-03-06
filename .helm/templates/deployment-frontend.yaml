@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-ui
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "yelb.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "yelb.fullname" . }}
+        tier: frontend
+        release: {{ .Release.Name }}
+        chart: {{ template "yelb.chart" . }}
+    spec:
+      containers:
+      - name: yelb-ui
+        image: {{ .Values.imageFrontend }}:{{ .Values.imageTag }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        env:
+        - name: "APP_SERVER_HOSTNAME"
+          value: {{ template "yelb.fullname" . }}-appserver
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
