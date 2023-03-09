@@ -7,6 +7,7 @@
 - cleanup: удаление тестового приложения
 - push: push ранее собранных и протестированных образов в Docker Regisrty
 - deploy: получение учётных данных Kubernetes, создание namespace, создание двух secrets: c учётными данными Docker Registry и SSL сертификатом; deploy приложения с помощью helm chart. 
+## Gitlab CI/CD variables:
 | Variable                | Descrtiption                                           |
 |-------------------------|--------------------------------------------------------|
 | IMAGE_BACKEND           | Backend image name                                     |
