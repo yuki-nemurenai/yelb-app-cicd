@@ -1,5 +1,6 @@
 # Yelb Application to Yandex Managed Service for Kubernetes deploy via Gitlab CI/CD pipeline
 ## The [Yelb Application](https://github.com/mreferre/yelb) made by mreferre is used. The rights to the application belong to them.
+## [IaC Repository](https://github.com/yuki-nemurenai/yandex-cloud-iac-terraform)
 ## Pipeline stages overview:
 - lint: yaml, dockerfile and helm lints;
 - build: building frontend and backend parts of the application using docker build;
