@@ -1,5 +1,12 @@
-# yelb-app-cicd
-## The [yelb application](https://github.com/mreferre/yelb) by mreferre is used
+# Yelb Application deploy to Yandex Cloud Managed Service for Kubernetes via Gitlab CI/CD pipeline
+## Используется приложение [yelb](https://github.com/mreferre/yelb) автора mreferre. Права на приложение принадлежат ему. 
+## Pipeline stages overview:
+- lint: yaml, dockerfile and helm lints
+- build: сборка frontend and backend частей приложения с помощью docker build
+- test: запуск приложения в docker-compose и его тестирование
+- cleanup: удаление тестового приложения
+- push: push ранее собранных и протестированных образов в Docker Regisrty
+- deploy: получение учётных данных Kubernetes, создание namespace, создание двух secrets: c учётными данными Docker Registry и SSL сертификатом; deploy приложения с помощью helm chart. 
 | Variable                | Descrtiption                                           |
 |-------------------------|--------------------------------------------------------|
 | IMAGE_BACKEND           | Backend image name                                     |
